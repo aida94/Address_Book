@@ -8,7 +8,11 @@ export const useStyles = makeStyles((theme) => ({
   },
   noData: {
     textAlign: "center",
+    marginTop: theme.spacing(5),
     color: theme.palette.grey[500],
+  },
+  contactList: {
+    minHeight: 300,
   },
   sort: {
     marginLeft: theme.spacing(3),

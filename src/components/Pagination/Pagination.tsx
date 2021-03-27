@@ -1,12 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 
-interface OwnProps {
-  count: number;
-  page: number;
-  setPage: (page: number) => void;
-}
+import { ContactContext } from "App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,8 +14,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PaginationRounded: React.FC<OwnProps> = ({ count, page, setPage }) => {
+const PaginationRounded: React.FC = () => {
   const classes = useStyles();
+  const context = useContext(ContactContext);
+  const { count, page, setPage } = context;
 
   return (
     <div className={classes.root}>

@@ -1,12 +1,21 @@
 import React from "react";
 
 import "App.css";
+import { useContact } from "controller/useContact";
 import Home from "pages/Home/Home";
 
+export const ContactContext = React.createContext("" as any);
+
 const App: React.FC = () => {
+  const { contacts, sort, setSort, count, page, setPage } = useContact();
+
   return (
     <div className="App">
-      <Home />
+      <ContactContext.Provider
+        value={{ contacts, sort, setSort, count, page, setPage }}
+      >
+        <Home />
+      </ContactContext.Provider>
     </div>
   );
 };
