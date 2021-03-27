@@ -6,6 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import _uniqueId from "lodash/uniqueId";
+import countryList from "react-select-country-list";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -55,6 +56,7 @@ const ContactModal: React.FC<OwnProps> = ({
           lastname: editContact.lastname,
           email: editContact.email,
           country: editContact.country,
+          countryLabel: editContact.countryLabel,
         }
       : {
           id: _uniqueId("contact_"),
@@ -62,10 +64,13 @@ const ContactModal: React.FC<OwnProps> = ({
           lastname: "",
           email: "",
           country: "",
+          countryLabel: "",
         },
 
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      values.countryLabel = countryList().getLabel(values.country);
+
       console.log(1, values);
     },
   });

@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 import _camelCase from "lodash/camelCase";
-import countryList from "react-select-country-list";
 
 import { ContactInterface } from "model/contact";
 import ContactModal from "components/Modal/Modal";
@@ -35,7 +34,7 @@ const Contact: React.FC<OwnProps> = ({ contact }) => {
           <Typography>{contact.email}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography>{countryList().getLabel(contact.country)}</Typography>
+          <Typography>{contact.countryLabel}</Typography>
         </Grid>
         <Grid item xs={2}>
           <Typography>

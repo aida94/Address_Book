@@ -8,6 +8,7 @@ export const contactList: ContactInterface[] = [
     lastname: "lastname1",
     email: "user1@hotmail.com",
     country: "AL",
+    countryLabel: "Albania",
   },
   {
     id: _uniqueId("contact_"),
@@ -15,6 +16,7 @@ export const contactList: ContactInterface[] = [
     lastname: "lastname2",
     email: "user2@hotmail.com",
     country: "IT",
+    countryLabel: "Albania",
   },
   {
     id: _uniqueId("contact_"),
@@ -22,6 +24,7 @@ export const contactList: ContactInterface[] = [
     lastname: "lastname3",
     email: "user3@hotmail.com",
     country: "AL",
+    countryLabel: "Albania",
   },
   {
     id: _uniqueId("contact_"),
@@ -29,6 +32,7 @@ export const contactList: ContactInterface[] = [
     lastname: "lastname4",
     email: "user4@hotmail.com",
     country: "AL",
+    countryLabel: "Albania",
   },
   {
     id: _uniqueId("contact_"),
@@ -36,6 +40,7 @@ export const contactList: ContactInterface[] = [
     lastname: "lastname5",
     email: "user5@hotmail.com",
     country: "AL",
+    countryLabel: "Albania",
   },
   {
     id: _uniqueId("contact_"),
@@ -43,5 +48,6 @@ export const contactList: ContactInterface[] = [
     lastname: "lastname6",
     email: "user5@hotmail.com",
     country: "AL",
+    countryLabel: "Albania",
   },
 ];

@@ -45,10 +45,10 @@ export const useContact = () => {
   // }, [contacts]);
 
   useEffect(() => {
-    const sortASC = contactList.sort((a, b) => a.name.localeCompare(b.name));
+    const sortASC = contacts.sort((a, b) => a.name.localeCompare(b.name));
 
     if (!sort) {
-      const sortDESC = contactList.sort((a, b) => b.name.localeCompare(a.name));
+      const sortDESC = contacts.sort((a, b) => b.name.localeCompare(a.name));
       setContacts(sortDESC);
       return;
     }

@@ -4,6 +4,7 @@ export interface ContactInterface {
   lastname: string;
   email: string;
   country: string;
+  countryLabel: string;
 }
 
 export class Contact {
@@ -12,6 +13,7 @@ export class Contact {
   lastname: string;
   email: string;
   country: string;
+  countryLabel: string;
 
   constructor(data: ContactInterface) {
     this.id = data.id;
@@ -19,5 +21,6 @@ export class Contact {
     this.lastname = data.lastname;
     this.email = data.email;
     this.country = data.country;
+    this.countryLabel = data.countryLabel;
   }
 }
