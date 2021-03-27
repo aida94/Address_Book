@@ -8,6 +8,8 @@ export const useStyles = makeStyles((theme) => ({
   },
   noData: {
     textAlign: "center",
+    fontSize: 26,
+    fontWeight: 700,
     marginTop: theme.spacing(5),
     color: theme.palette.grey[500],
   },

@@ -31,7 +31,6 @@ const ContactForm: React.FC<OwnProps> = ({ formik }) => {
               type="text"
               label="Name"
               margin="dense"
-              required
             />
             <FormHelperText className={classes.inputError}>
               {formik.touched.name && formik.errors.name}
@@ -51,7 +50,6 @@ const ContactForm: React.FC<OwnProps> = ({ formik }) => {
               type="text"
               label="Lastname"
               margin="dense"
-              required
             />
             <FormHelperText className={classes.inputError}>
               {formik.touched.lastname && formik.errors.lastname}
@@ -71,7 +69,6 @@ const ContactForm: React.FC<OwnProps> = ({ formik }) => {
               type="email"
               label="Email"
               margin="dense"
-              required
             />
             <FormHelperText className={classes.inputError}>
               {formik.touched.email && formik.errors.email}
@@ -90,7 +87,6 @@ const ContactForm: React.FC<OwnProps> = ({ formik }) => {
               value={formik.values.country}
               onChange={formik.handleChange}
               margin="dense"
-              required
               MenuProps={{
                 getContentAnchorEl: null,
                 anchorOrigin: {

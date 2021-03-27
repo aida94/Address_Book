@@ -5,15 +5,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
-import _uniqueId from "lodash/uniqueId";
 import countryList from "react-select-country-list";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 import { ContactContext } from "App";
-import { contactList } from "data/contactList";
 import ContactForm from "components/Form/Form";
 import { useStyles } from "components/Modal/style";
+import { ContactInterface } from "model/contact";
 
 const validationSchema = yup.object({
   name: yup
@@ -47,9 +46,11 @@ const ContactModal: React.FC<OwnProps> = ({
   setOpen,
 }) => {
   const classes = useStyles();
-  const editContact = contactList.find((contact) => contact.id === contactId);
   const context = useContext(ContactContext);
-  const { onSave, onDelete } = context;
+  const { contacts, onSave, onDelete } = context;
+  const editContact = contacts.find(
+    (contact: ContactInterface) => contact.id === contactId
+  );
 
   const formik = useFormik({
     initialValues: editContact
@@ -62,7 +63,7 @@ const ContactModal: React.FC<OwnProps> = ({
           countryLabel: editContact.countryLabel,
         }
       : {
-          id: _uniqueId(),
+          id: 0,
           name: "",
           lastname: "",
           email: "",
@@ -76,6 +77,7 @@ const ContactModal: React.FC<OwnProps> = ({
 
       onSave(values);
       setOpen(false);
+      formik.resetForm();
     },
   });
 

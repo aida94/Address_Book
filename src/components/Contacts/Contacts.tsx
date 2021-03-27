@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Sort from "@material-ui/icons/Sort";
@@ -12,10 +12,7 @@ import ContactModal from "components/Modal/Modal";
 import { useStyles } from "components/Contacts/style";
 import { Typography } from "@material-ui/core";
 import { ContactInterface } from "model/contact";
-
-enum Constant {
-  PAGE_SIZE = 5,
-}
+import { Constant } from "model/constant";
 
 function paginate(contacts: any, page_size: number, page_number: number) {
   return contacts.slice((page_number - 1) * page_size, page_number * page_size);
@@ -31,19 +28,36 @@ const LightTooltip = withStyles((theme) => ({
 
 const ContactList: React.FC = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState<boolean>(false);
   const context = useContext(ContactContext);
-  const { contacts, sort, setSort } = context;
+  const { contacts } = context;
+  const [open, setOpen] = useState<boolean>(false);
+  const [sort, setSort] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
+  const [sortedContacts, setSortedContacts] = useState(contacts);
   const count = Math.ceil(contacts.length / Constant.PAGE_SIZE);
-  const paginatedContacts = paginate(contacts, Constant.PAGE_SIZE, page);
+
+  useEffect(() => {
+    const sortASC = contacts.sort((a: any, b: any) =>
+      a.name.localeCompare(b.name)
+    );
+
+    if (!sort) {
+      const sortDESC = contacts.sort((a: any, b: any) =>
+        b.name.localeCompare(a.name)
+      );
+      setSortedContacts(sortDESC);
+      return;
+    }
+
+    setSortedContacts(sortASC);
+  }, [contacts, sort]);
+
+  const paginatedContacts = paginate(sortedContacts, Constant.PAGE_SIZE, page);
 
   return (
     <div className={classes.container}>
       {!contacts.length && (
-        <Typography>
-          <h2 className={classes.noData}>No data</h2>
-        </Typography>
+        <Typography className={classes.noData}>No data</Typography>
       )}
 
       {contacts.length > 0 && (

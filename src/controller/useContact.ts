@@ -1,69 +1,49 @@
 import { useState, useEffect } from "react";
+
 import { contactList } from "data/contactList";
 import { ContactInterface } from "model/contact";
 import useDebounce from "controller/useDebounce";
+import { Constant } from "model/constant";
 
-// enum Constant {
-//   CONTACTS_STORAGE = "contactsStorage",
-// }
-
-function filterByValue(array: any, string: string) {
+function filterByValue(array: any, value: string) {
+  console.log(array, value);
   return array.filter((o: any) =>
-    Object.keys(o).some((k) =>
-      o[k].toLowerCase().includes(string.toLowerCase())
-    )
+    Object.keys(o).some((k) => o[k].toLowerCase().includes(value.toLowerCase()))
   );
 }
 
 export const useContact = () => {
-  // const contactsStorage = localStorage.getItem(Constant.CONTACTS_STORAGE);
+  const contactsStorage = localStorage.getItem(Constant.CONTACTS_STORAGE);
   const [contacts, setContacts] = useState<ContactInterface[]>(contactList);
-  const [sort, setSort] = useState<boolean>(true);
-
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-      const filterContacts = filterByValue(contactList, debouncedSearchTerm);
+      const filterContacts = filterByValue(contacts, debouncedSearchTerm);
 
       setContacts(filterContacts);
       return;
     }
 
     setContacts(contactList);
-  }, [debouncedSearchTerm]);
-
-  // useEffect(() => {
-  //   if (contactsStorage) {
-  //     setContacts(JSON.parse(contactsStorage));
-  //   }
-  // }, [contactsStorage]);
-
-  // useEffect(() => {
-  //   localStorage.setItem(Constant.CONTACTS_STORAGE, JSON.stringify(contacts));
-  // }, [contacts]);
+  }, [contacts, debouncedSearchTerm]);
 
   useEffect(() => {
-    const sortASC = contacts.sort((a, b) => a.name.localeCompare(b.name));
-
-    if (!sort) {
-      const sortDESC = contacts.sort((a, b) => b.name.localeCompare(a.name));
-      setContacts(sortDESC);
-      return;
+    if (contactsStorage) {
+      setContacts(JSON.parse(contactsStorage));
     }
-
-    setContacts(sortASC);
-  }, [contacts, sort]);
+  }, [contactsStorage]);
 
   const onSave = (values: ContactInterface) => {
-    let oldContact = contacts;
+    let newContacts = contacts;
     const existContact = contacts.find((contact) => contact.id === values.id);
 
     if (!existContact) {
-      oldContact.push(values);
+      values.id = Date.now().toString();
+      newContacts.push(values);
     } else {
-      oldContact = contacts.map((contact) => {
+      newContacts = contacts.map((contact) => {
         if (contact.id === existContact.id) {
           return values;
         }
@@ -71,19 +51,26 @@ export const useContact = () => {
       });
     }
 
-    setContacts(oldContact);
+    localStorage.setItem(
+      Constant.CONTACTS_STORAGE,
+      JSON.stringify(newContacts)
+    );
+    setContacts(newContacts);
   };
 
   const onDelete = (id: string) => {
+    console.log(id);
     const newContacts = contacts.filter((contact) => contact.id !== id);
 
+    localStorage.setItem(
+      Constant.CONTACTS_STORAGE,
+      JSON.stringify(newContacts)
+    );
     setContacts(newContacts);
   };
 
   return {
     contacts,
-    sort,
-    setSort,
     searchTerm,
     setSearchTerm,
     onSave,

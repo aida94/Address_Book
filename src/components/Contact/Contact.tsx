@@ -5,7 +5,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
-import _camelCase from "lodash/camelCase";
 
 import { ContactInterface } from "model/contact";
 import ContactModal from "components/Modal/Modal";
@@ -29,7 +28,7 @@ const Contact: React.FC<OwnProps> = ({ contact }) => {
         </Grid>
         <Grid item xs={12}>
           <Typography>
-            {_camelCase(contact.name)} {_camelCase(contact.lastname)}
+            {contact.name} {contact.lastname}
           </Typography>
           <Typography>{contact.email}</Typography>
         </Grid>
