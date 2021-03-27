@@ -7,7 +7,15 @@ import Home from "pages/Home/Home";
 export const ContactContext = React.createContext("" as any);
 
 const App: React.FC = () => {
-  const { contacts, sort, setSort, searchTerm, setSearchTerm } = useContact();
+  const {
+    contacts,
+    sort,
+    setSort,
+    searchTerm,
+    setSearchTerm,
+    onSave,
+    onDelete,
+  } = useContact();
 
   return (
     <div className="App">
@@ -18,6 +26,8 @@ const App: React.FC = () => {
           setSort,
           searchTerm,
           setSearchTerm,
+          onSave,
+          onDelete,
         }}
       >
         <Home />

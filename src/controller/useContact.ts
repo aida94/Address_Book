@@ -3,9 +3,9 @@ import { contactList } from "data/contactList";
 import { ContactInterface } from "model/contact";
 import useDebounce from "controller/useDebounce";
 
-enum Constant {
-  CONTACTS_STORAGE = "contactsStorage",
-}
+// enum Constant {
+//   CONTACTS_STORAGE = "contactsStorage",
+// }
 
 function filterByValue(array: any, string: string) {
   return array.filter((o: any) =>
@@ -16,7 +16,7 @@ function filterByValue(array: any, string: string) {
 }
 
 export const useContact = () => {
-  const contactsStorage = localStorage.getItem(Constant.CONTACTS_STORAGE);
+  // const contactsStorage = localStorage.getItem(Constant.CONTACTS_STORAGE);
   const [contacts, setContacts] = useState<ContactInterface[]>(contactList);
   const [sort, setSort] = useState<boolean>(true);
 
@@ -54,7 +54,31 @@ export const useContact = () => {
     }
 
     setContacts(sortASC);
-  }, [sort]);
+  }, [contacts, sort]);
+
+  const onSave = (values: ContactInterface) => {
+    let oldContact = contacts;
+    const existContact = contacts.find((contact) => contact.id === values.id);
+
+    if (!existContact) {
+      oldContact.push(values);
+    } else {
+      oldContact = contacts.map((contact) => {
+        if (contact.id === existContact.id) {
+          return values;
+        }
+        return contact;
+      });
+    }
+
+    setContacts(oldContact);
+  };
+
+  const onDelete = (id: string) => {
+    const newContacts = contacts.filter((contact) => contact.id !== id);
+
+    setContacts(newContacts);
+  };
 
   return {
     contacts,
@@ -62,5 +86,7 @@ export const useContact = () => {
     setSort,
     searchTerm,
     setSearchTerm,
+    onSave,
+    onDelete,
   };
 };

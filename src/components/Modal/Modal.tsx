@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,6 +10,7 @@ import countryList from "react-select-country-list";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+import { ContactContext } from "App";
 import { contactList } from "data/contactList";
 import ContactForm from "components/Form/Form";
 import { useStyles } from "components/Modal/style";
@@ -47,6 +48,8 @@ const ContactModal: React.FC<OwnProps> = ({
 }) => {
   const classes = useStyles();
   const editContact = contactList.find((contact) => contact.id === contactId);
+  const context = useContext(ContactContext);
+  const { onSave, onDelete } = context;
 
   const formik = useFormik({
     initialValues: editContact
@@ -59,7 +62,7 @@ const ContactModal: React.FC<OwnProps> = ({
           countryLabel: editContact.countryLabel,
         }
       : {
-          id: _uniqueId("contact_"),
+          id: _uniqueId(),
           name: "",
           lastname: "",
           email: "",
@@ -71,26 +74,27 @@ const ContactModal: React.FC<OwnProps> = ({
     onSubmit: (values) => {
       values.countryLabel = countryList().getLabel(values.country);
 
-      console.log(1, values);
+      onSave(values);
+      setOpen(false);
     },
   });
-
-  const onDelete = () => {
-    console.log(contactId);
-  };
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
       <DialogTitle>
         <Typography className={classes.title}>{title}</Typography>
       </DialogTitle>
-      <form noValidate autoComplete="off" onClick={formik.handleSubmit}>
+      <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
         <DialogContent dividers className={classes.modalContent}>
           <ContactForm formik={formik} />
         </DialogContent>
         <DialogActions>
           {contactId && (
-            <Button onClick={onDelete} size="large" className={classes.delete}>
+            <Button
+              onClick={() => onDelete(contactId)}
+              size="large"
+              className={classes.delete}
+            >
               Delete
             </Button>
           )}
