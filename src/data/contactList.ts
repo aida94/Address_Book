@@ -30,18 +30,18 @@ export const contactList: ContactInterface[] = [
     email: "user4@hotmail.com",
     country: "AL",
   },
-  // {
-  //   id: _uniqueId("contact_"),
-  //   name: "name5",
-  //   lastname: "lastname5",
-  //   email: "user5@hotmail.com",
-  //   country: "AL",
-  // },
-  // {
-  //   id: _uniqueId("contact_"),
-  //   name: "name5",
-  //   lastname: "lastname5",
-  //   email: "user5@hotmail.com",
-  //   country: "AL",
-  // },
+  {
+    id: _uniqueId("contact_"),
+    name: "name5",
+    lastname: "lastname5",
+    email: "user5@hotmail.com",
+    country: "AL",
+  },
+  {
+    id: _uniqueId("contact_"),
+    name: "boi3",
+    lastname: "lastname6",
+    email: "user5@hotmail.com",
+    country: "AL",
+  },
 ];

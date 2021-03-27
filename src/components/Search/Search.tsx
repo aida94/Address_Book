@@ -1,19 +1,17 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import Close from "@material-ui/icons/Close";
 
-const useStyles = makeStyles((theme) => ({
-  search: {
-    float: "right",
-    marginRight: theme.spacing(5),
-  },
-}));
+import { ContactContext } from "App";
+import { useStyles } from "components/Search/style";
 
 const Search: React.FC = (props) => {
   const classes = useStyles(props);
+  const context = useContext(ContactContext);
+  const { searchTerm, setSearchTerm } = context;
 
   return (
     <div className={classes.search}>
@@ -22,13 +20,23 @@ const Search: React.FC = (props) => {
         placeholder="Search"
         size="medium"
         margin="normal"
-        // autoFocus
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton aria-label="search">
-                <SearchIcon />
-              </IconButton>
+              {searchTerm ? (
+                <IconButton
+                  aria-label="close"
+                  onClick={() => setSearchTerm("")}
+                >
+                  <Close />
+                </IconButton>
+              ) : (
+                <IconButton aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+              )}
             </InputAdornment>
           ),
         }}
