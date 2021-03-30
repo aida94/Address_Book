@@ -1,20 +1,18 @@
 import { useState, useEffect } from "react";
 
-import { contactList } from "data/contactList";
 import { ContactInterface } from "model/contact";
 import useDebounce from "controller/useDebounce";
 import { Constant } from "model/constant";
 
 function filterByValue(array: any, value: string) {
-  console.log(array, value);
   return array.filter((o: any) =>
     Object.keys(o).some((k) => o[k].toLowerCase().includes(value.toLowerCase()))
   );
 }
 
 export const useContact = () => {
-  const contactsStorage = localStorage.getItem(Constant.CONTACTS_STORAGE);
-  const [contacts, setContacts] = useState<ContactInterface[]>(contactList);
+  const storage = localStorage.getItem(Constant.CONTACTS_STORAGE);
+  const [contacts, setContacts] = useState<ContactInterface[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -26,14 +24,17 @@ export const useContact = () => {
       return;
     }
 
-    setContacts(contactList);
-  }, [contacts, debouncedSearchTerm]);
+    if (storage) {
+      setContacts(JSON.parse(storage));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
-    if (contactsStorage) {
-      setContacts(JSON.parse(contactsStorage));
+    if (storage) {
+      setContacts(JSON.parse(storage));
     }
-  }, [contactsStorage]);
+  }, [storage]);
 
   const onSave = (values: ContactInterface) => {
     let newContacts = contacts;
@@ -59,7 +60,6 @@ export const useContact = () => {
   };
 
   const onDelete = (id: string) => {
-    console.log(id);
     const newContacts = contacts.filter((contact) => contact.id !== id);
 
     localStorage.setItem(

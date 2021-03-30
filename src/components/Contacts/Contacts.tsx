@@ -4,17 +4,21 @@ import IconButton from "@material-ui/core/IconButton";
 import Sort from "@material-ui/icons/Sort";
 import Add from "@material-ui/icons/Add";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Typography } from "@material-ui/core";
 
 import { ContactContext } from "App";
+import { ContactInterface } from "model/contact";
+import { Constant } from "model/constant";
 import PaginationRounded from "components/Pagination/Pagination";
 import Contact from "components/Contact/Contact";
 import ContactModal from "components/Modal/Modal";
 import { useStyles } from "components/Contacts/style";
-import { Typography } from "@material-ui/core";
-import { ContactInterface } from "model/contact";
-import { Constant } from "model/constant";
 
-function paginate(contacts: any, page_size: number, page_number: number) {
+function paginate(
+  contacts: ContactInterface[],
+  page_size: number,
+  page_number: number
+) {
   return contacts.slice((page_number - 1) * page_size, page_number * page_size);
 }
 
@@ -29,7 +33,7 @@ const LightTooltip = withStyles((theme) => ({
 const ContactList: React.FC = () => {
   const classes = useStyles();
   const context = useContext(ContactContext);
-  const { contacts } = context;
+  const { contacts, setSearchTerm } = context;
   const [open, setOpen] = useState<boolean>(false);
   const [sort, setSort] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
@@ -37,13 +41,14 @@ const ContactList: React.FC = () => {
   const count = Math.ceil(contacts.length / Constant.PAGE_SIZE);
 
   useEffect(() => {
-    const sortASC = contacts.sort((a: any, b: any) =>
+    const sortASC = contacts.sort((a: ContactInterface, b: ContactInterface) =>
       a.name.localeCompare(b.name)
     );
 
     if (!sort) {
-      const sortDESC = contacts.sort((a: any, b: any) =>
-        b.name.localeCompare(a.name)
+      const sortDESC = contacts.sort(
+        (a: ContactInterface, b: ContactInterface) =>
+          b.name.localeCompare(a.name)
       );
       setSortedContacts(sortDESC);
       return;
@@ -51,6 +56,11 @@ const ContactList: React.FC = () => {
 
     setSortedContacts(sortASC);
   }, [contacts, sort]);
+
+  const handleAddClick = () => {
+    setSearchTerm("");
+    setOpen(true);
+  };
 
   const paginatedContacts = paginate(sortedContacts, Constant.PAGE_SIZE, page);
 
@@ -79,7 +89,7 @@ const ContactList: React.FC = () => {
       <IconButton
         aria-label="search"
         className={classes.addButton}
-        onClick={() => setOpen(true)}
+        onClick={handleAddClick}
       >
         <Add />
       </IconButton>
