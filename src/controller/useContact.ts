@@ -71,6 +71,7 @@ export const useContact = () => {
 
   return {
     contacts,
+    setContacts,
     searchTerm,
     setSearchTerm,
     onSave,

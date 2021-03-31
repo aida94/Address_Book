@@ -9,8 +9,10 @@ import Home from "pages/Home/Home";
 export const ContactContext = React.createContext("" as any);
 
 const App: React.FC = () => {
+  const storage = localStorage.getItem(Constant.CONTACTS_STORAGE);
   const {
     contacts,
+    setContacts,
     searchTerm,
     setSearchTerm,
     onSave,
@@ -18,11 +20,15 @@ const App: React.FC = () => {
   } = useContact();
 
   useEffect(() => {
-    localStorage.setItem(
-      Constant.CONTACTS_STORAGE,
-      JSON.stringify(contactList)
-    );
-  }, []);
+    if (!storage) {
+      localStorage.setItem(
+        Constant.CONTACTS_STORAGE,
+        JSON.stringify(contactList)
+      );
+      setContacts(contactList);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storage]);
 
   return (
     <div className="App">
